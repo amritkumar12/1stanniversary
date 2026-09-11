@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amrit × Chanda — One Year, Three Journeys</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ivory: {
+                            50: '#FAF7F2',
+                            100: '#F5F0EB',
+                            200: '#EADFD5',
+                            300: '#DDD0C3'
+                        },
+                        burgundy: {
+                            800: '#5A1827',
+                            900: '#3D0E19',
+                            950: '#26080F'
+                        },
+                        rose: {
+                            400: '#C88A8A',
+                            500: '#B87272',
+                            600: '#9E5555'
+                        },
+                        gold: {
+                            400: '#D4AF37',
+                            500: '#C5A059',
+                            600: '#A8833B'
+                        },
+                        charcoal: {
+                            800: '#2B2828',
+                            900: '#1A1818'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        handwriting: ['Caveat', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF7F2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C88A8A;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5A1827;
+        }
+
+        /* Subtle ambient movement animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(0.5deg); }
+        }
+        .animate-float {
+            animation: floatSlow 8s ease-in-out infinite;
+        }
+
+        /* Subtle pulse for hero background */
+        @keyframes subtlePulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.03); }
+        }
+        .animate-pulse-subtle {
+            animation: subtlePulse 12s ease-in-out infinite;
+        }
+
+        /* Handwritten letter page feel */
+        .letter-paper {
+            background-color: #FAF6F0;
+            background-image: radial-gradient(#e2d5c3 0.75px, transparent 0.75px);
+            background-size: 16px 16px;
+            box-shadow: 0 20px 40px -15px rgba(61, 14, 25, 0.08);
+        }
+
+        /* Custom selection color */
+        ::selection {
+            background-color: #5A1827;
+            color: #FAF7F2;
+        }
+
+        /* Smooth scroll reveal utility initial states */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Line draw logic for travel map */
+        .line-progress {
+            transition: width 0.8s ease-out;
+        }
+    </style>
+</head>
+
+<body class="bg-ivory-50 text-charcoal-800 font-sans antialiased selection:bg-burgundy-900 selection:text-ivory-50 overflow-x-hidden">
+
+    <!-- NAVIGATION BAR -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-500 py-5 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="#hero" class="font-serif text-xl md:text-2xl font-semibold tracking-wider text-burgundy-900 flex items-center gap-2 group">
+                <span>Amrit</span>
+                <span class="text-rose-500 font-sans text-xs group-hover:rotate-45 transition-transform duration-300">✕</span>
+                <span>Chanda</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8 font-sans text-xs uppercase tracking-widest font-medium text-charcoal-800/80">
+                <a href="#hero" class="hover:text-burgundy-800 transition-colors py-1">Home</a>
+                <a href="#our-story" class="hover:text-burgundy-800 transition-colors py-1">Our Story</a>
+                <a href="#journeys" class="hover:text-burgundy-800 transition-colors py-1">Journeys</a>
+                <a href="#memories" class="hover:text-burgundy-800 transition-colors py-1">Memories</a>
+                <a href="#letter" class="hover:text-burgundy-800 transition-colors py-1">Letter</a>
+            </nav>
+
+            <!-- Ambient Audio Toggle & Mobile Menu Btn -->
+            <div class="flex items-center gap-4">
+                <button id="audio-toggle" class="p-2.5 rounded-full border border-burgundy-800/15 bg-ivory-50/80 backdrop-blur text-burgundy-900 hover:bg-burgundy-900 hover:text-ivory-50 transition-all duration-300 text-xs flex items-center gap-2" title="Toggle Soft Ambient Sound">
+                    <i data-lucide="music" class="w-3.5 h-3.5"></i>
+                    <span id="audio-label" class="hidden sm:inline font-sans text-[10px] tracking-widest uppercase">Sound Off</span>
+                </button>
+
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-burgundy-900 focus:outline-none" aria-label="Toggle menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 top-[70px] bg-ivory-50/98 backdrop-blur-md z-30 flex flex-col items-center justify-center space-y-8 text-lg font-serif tracking-widest text-burgundy-900 border-t border-burgundy-900/10">
+            <a href="#hero" class="mobile-nav-link">Home</a>
+            <a href="#our-story" class="mobile-nav-link">Our Story</a>
+            <a href="#journeys" class="mobile-nav-link">Journeys</a>
+            <a href="#memories" class="mobile-nav-link">Memories</a>
+            <a href="#letter" class="mobile-nav-link">Letter</a>
+        </div>
+    </header>
+
+    <!-- 1. HERO SECTION -->
+    <section id="hero" class="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 pb-12 overflow-hidden">
+        <!-- Cinematic Background Glows -->
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-rose-400/10 rounded-full blur-3xl animate-pulse-subtle"></div>
+            <div class="absolute bottom-10 -left-20 w-[400px] h-[400px] bg-gold-400/10 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/3 -right-20 w-[400px] h-[400px] bg-burgundy-800/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto space-y-8 reveal-on-scroll is-visible">
+            <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-gold-500/30 bg-ivory-100/60 backdrop-blur text-gold-600 font-sans text-xs tracking-widest uppercase">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold-500 animate-ping"></span>
+                1st Anniversary • A Love Story 
+            </div>
+
+            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-light text-burgundy-900 tracking-tight leading-none">
+                Amrit <span class="font-serif italic font-extralight text-rose-500 text-4xl sm:text-6xl md:text-7xl">&</span> Chanda
+            </h1>
+
+            <p class="font-serif text-2xl sm:text-3xl md:text-4xl text-charcoal-800/90 font-light italic max-w-2xl mx-auto leading-relaxed">
+                "One Year. Three Journeys. Countless Memories."
+            </p>
+
+            <p class="font-sans text-sm sm:text-base text-charcoal-800/70 font-normal max-w-xl mx-auto tracking-wide">
+                365 days of us, and I'd choose you all over again.
+            </p>
+
+            <div class="pt-4">
+                <span class="inline-block text-xs font-serif italic text-burgundy-800/80 border-b border-rose-400/40 pb-1">
+                    Happy 1st Anniversary, Chanda ❤️
+                </span>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-charcoal-800/50 hover:text-burgundy-900 transition-colors">
+            <span class="font-sans text-[11px] uppercase tracking-widest">Our story</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 animate-bounce"></i>
+        </div>
+    </section>
+
+    <!-- 2. OUR STORY -->
+    <section id="our-story" class="py-24 px-6 md:px-12 max-w-5xl mx-auto relative">
+        <div class="text-center space-y-6 reveal-on-scroll">
+            <span class="font-sans text-xs tracking-[0.25em] text-gold-600 uppercase font-semibold">The Beginning</span>
+            <h2 class="font-serif text-4xl md:text-5xl text-burgundy-900 font-normal">One Year of Us</h2>
+            <div class="w-12 h-[1px] bg-burgundy-900/20 mx-auto"></div>
+            <p class="font-sans text-base sm:text-lg text-charcoal-800/80 leading-relaxed max-w-3xl mx-auto font-light">
+                One year ago, our story began. Since then, we've collected countless little moments — conversations, laughter, silly fights, beautiful days, difficult days, and memories that somehow became impossible to forget.
+            </p>
+            <p class="font-serif italic text-xl text-burgundy-800/90 pt-2">
+                And among all those memories, three journeys became chapters of their own.
+            </p>
+        </div>
+
+        <!-- Chapter Summary Bar -->
+        <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 relative reveal-on-scroll">
+            <div class="p-8 rounded-2xl bg-ivory-100/70 border border-ivory-200 text-center hover:shadow-lg hover:shadow-burgundy-900/5 transition-all duration-300">
+                <span class="font-serif text-xs text-gold-600 tracking-widest uppercase block mb-2">Chapter I</span>
+                <h3 class="font-serif text-2xl text-burgundy-900 mb-1">Bhopal</h3>
+                <p class="font-sans text-xs text-charcoal-800/60 uppercase tracking-wider">Our First Trip</p>
+            </div>
+            <div class="p-8 rounded-2xl bg-ivory-100/70 border border-ivory-200 text-center hover:shadow-lg hover:shadow-burgundy-900/5 transition-all duration-300">
+                <span class="font-serif text-xs text-gold-600 tracking-widest uppercase block mb-2">Chapter II</span>
+                <h3 class="font-serif text-2xl text-burgundy-900 mb-1">Jabalpur</h3>
+                <p class="font-sans text-xs text-charcoal-800/60 uppercase tracking-wider">Our Second Trip</p>
+            </div>
+            <div class="p-8 rounded-2xl bg-ivory-100/70 border border-ivory-200 text-center hover:shadow-lg hover:shadow-burgundy-900/5 transition-all duration-300">
+                <span class="font-serif text-xs text-gold-600 tracking-widest uppercase block mb-2">Chapter III</span>
+                <h3 class="font-serif text-2xl text-burgundy-900 mb-1">Banaras</h3>
+                <p class="font-sans text-xs text-charcoal-800/60 uppercase tracking-wider">Our Third Trip</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUOTE INTERLUDE 1 -->
+    <section class="py-16 px-6 bg-burgundy-900 text-ivory-50 text-center my-12 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#FAF7F2_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-3xl mx-auto relative z-10 space-y-4 reveal-on-scroll">
+            <i data-lucide="quote" class="w-8 h-8 mx-auto text-rose-400/40 stroke-[1.5]"></i>
+            <p class="font-serif text-2xl sm:text-3xl italic font-light leading-snug">
+                "I didn't just find someone to love. I found someone who makes life feel more beautiful."
+            </p>
+        </div>
+    </section>
+
+    <!-- 3. OUR THREE JOURNEYS -->
+    <section id="journeys" class="py-20 px-6 md:px-12 max-w-6xl mx-auto space-y-32">
+        
+        <!-- 📍 CHAPTER I — BHOPAL -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center reveal-on-scroll">
+            <div class="lg:col-span-6 space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-burgundy-900/5 text-burgundy-900 text-xs tracking-widest uppercase font-sans">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-rose-500"></i> Chapter I
+                </div>
+                <h2 class="font-serif text-4xl sm:text-5xl text-burgundy-900 font-normal">Chapter I — Bhopal</h2>
+                <h3 class="font-serif text-xl italic text-rose-600">"Where our first journey became a memory."</h3>
+                
+                <p class="font-sans text-base text-charcoal-800/80 leading-relaxed font-light">
+                    Our first trip together. A new city, new places, new moments — and the realization that traveling with you could make even an ordinary day feel extraordinary.
+                </p>
+
+                <blockquote class="p-6 rounded-2xl bg-ivory-100 border-l-2 border-gold-500 font-serif italic text-charcoal-800 text-lg">
+                    "The destination was Bhopal, but my favorite part was simply being there with you."
+                </blockquote>
+            </div>
+
+            <div class="lg:col-span-6">
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-burgundy-900/10 group">
+                    <img src="images/photo1.jpeg" alt="Bhopal Journey" class="w-full h-[450px] object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" onerror="this.src='https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=1200&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-burgundy-950/60 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6 text-ivory-50">
+                        <span class="font-sans text-xs tracking-widest uppercase opacity-80">Upper Lake & Quiet Evenings</span>
+                        <p class="font-serif text-lg">Bhopal — The First Chapter</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center py-6 reveal-on-scroll">
+            <p class="font-serif text-xl sm:text-2xl italic text-burgundy-800/90 max-w-2xl mx-auto">
+                "The best destinations are the ones that leave you with memories you never want to lose."
+            </p>
+        </div>
+
+        <!-- 📍 CHAPTER II — JABALPUR -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center reveal-on-scroll">
+            <div class="lg:col-span-6 lg:order-2 space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-burgundy-900/5 text-burgundy-900 text-xs tracking-widest uppercase font-sans">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-rose-500"></i> Chapter II
+                </div>
+                <h2 class="font-serif text-4xl sm:text-5xl text-burgundy-900 font-normal">Chapter II — Jabalpur</h2>
+                <h3 class="font-serif text-xl italic text-rose-600">"Another city. Another collection of memories."</h3>
+                
+                <p class="font-sans text-base text-charcoal-800/80 leading-relaxed font-light">
+                    By our second journey, things already felt a little more familiar — the conversations came easier, the laughter came quicker, and every little moment felt more like us.
+                </p>
+
+                <blockquote class="p-6 rounded-2xl bg-ivory-100 border-l-2 border-rose-500 font-serif italic text-charcoal-800 text-lg">
+                    "Maybe the best part of a journey isn't where we go, but who we become along the way."
+                </blockquote>
+            </div>
+
+            <div class="lg:col-span-6 lg:order-1">
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-burgundy-900/10 group">
+                    <img src="images/photo2.jpeg" alt="Jabalpur Journey" class="w-full h-[450px] object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" onerror="this.src='https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-burgundy-950/60 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6 text-ivory-50">
+                        <p class="font-serif text-lg">Jabalpur — The Second Chapter</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center py-6 reveal-on-scroll">
+            <p class="font-serif text-xl sm:text-2xl italic text-burgundy-800/90 max-w-2xl mx-auto">
+                "One year with you, and somehow, every memory still feels like a favorite."
+            </p>
+        </div>
+
+        <!-- 📍 CHAPTER III — BANARAS -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center reveal-on-scroll">
+            <div class="lg:col-span-6 space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-burgundy-900/5 text-burgundy-900 text-xs tracking-widest uppercase font-sans">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-rose-500"></i> Chapter III
+                </div>
+                <h2 class="font-serif text-4xl sm:text-5xl text-burgundy-900 font-normal">Chapter III — Banaras</h2>
+                <h3 class="font-serif text-xl italic text-rose-600">"A city full of stories. Another chapter of ours."</h3>
+                
+                <p class="font-sans text-base text-charcoal-800/80 leading-relaxed font-light">
+                    Banaras gave us another collection of moments to keep — another place, another journey, another reminder of how many memories can fit inside a single year.
+                </p>
+
+                <blockquote class="p-6 rounded-2xl bg-ivory-100 border-l-2 border-gold-500 font-serif italic text-charcoal-800 text-lg space-y-2">
+                    <p>"Some places stay in your memory because of what you saw. Some stay because of who you were with."</p>
+                    <p class="text-burgundy-900 font-medium font-sans text-sm tracking-wide">— For me, Banaras will always be one of ours.</p>
+                </blockquote>
+            </div>
+
+            <div class="lg:col-span-6">
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-burgundy-900/10 group">
+                    <img src="images/photo3.jpeg" alt="Banaras Journey" class="w-full h-[450px] object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" onerror="this.src='https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-burgundy-950/60 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6 text-ivory-50">
+                        <span class="font-sans text-xs tracking-widest uppercase opacity-80">Ghats, Lanterns & Timeless River Lights</span>
+                        <p class="font-serif text-lg">Banaras — The Third Chapter</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. TRAVEL JOURNEY MAP -->
+    <section class="py-24 px-6 bg-ivory-100/60 border-y border-ivory-200 my-20">
+        <div class="max-w-4xl mx-auto space-y-12 reveal-on-scroll">
+            <div class="text-center space-y-2">
+                <span class="font-sans text-xs tracking-widest uppercase text-gold-600 font-semibold">Timeline</span>
+                <h2 class="font-serif text-3xl sm:text-4xl text-burgundy-900">The Visual Path</h2>
+            </div>
+
+            <div id="journey-map" class="relative py-8">
+                <!-- Connecting Line Background -->
+                <div class="absolute top-1/2 left-4 right-4 h-0.5 bg-burgundy-900/10 -translate-y-1/2"></div>
+                <!-- Animated Progress Line -->
+                <div id="map-progress-line" class="absolute top-1/2 left-4 h-0.5 bg-gold-500 -translate-y-1/2 w-0 transition-all duration-1000 ease-out"></div>
+
+                <div class="relative z-10 flex justify-between items-center max-w-2xl mx-auto">
+                    <!-- Point 1 -->
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-ivory-50 border-2 border-gold-500 flex items-center justify-center text-burgundy-900 shadow-md">
+                            <span class="font-serif text-sm font-bold">1</span>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="font-serif text-lg font-medium text-burgundy-900">BHOPAL</h4>
+                            <p class="font-sans text-xs text-charcoal-800/60">1st Trip</p>
+                        </div>
+                    </div>
+
+                    <!-- Point 2 -->
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-ivory-50 border-2 border-gold-500 flex items-center justify-center text-burgundy-900 shadow-md">
+                            <span class="font-serif text-sm font-bold">2</span>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="font-serif text-lg font-medium text-burgundy-900">JABALPUR</h4>
+                            <p class="font-sans text-xs text-charcoal-800/60">2nd Trip</p>
+                        </div>
+                    </div>
+
+                    <!-- Point 3 -->
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-ivory-50 border-2 border-gold-500 flex items-center justify-center text-burgundy-900 shadow-md">
+                            <span class="font-serif text-sm font-bold">3</span>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="font-serif text-lg font-medium text-burgundy-900">BANARAS</h4>
+                            <p class="font-sans text-xs text-charcoal-800/60">3rd Trip</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="text-center py-6 px-6 reveal-on-scroll">
+        <p class="font-serif text-2xl italic text-burgundy-900 max-w-xl mx-auto">
+            "If I could relive this year, I'd still choose every moment with you."
+        </p>
+    </div>
+
+    <!-- 5. 30 PHOTO MEMORIES (ALL-TIME COLLECTION) -->
+    <section id="memories" class="py-24 px-6 md:px-12 max-w-7xl mx-auto space-y-12">
+        <div class="text-center space-y-4 reveal-on-scroll">
+            <span class="font-sans text-xs tracking-[0.25em] text-gold-600 uppercase font-semibold">Captured Moments</span>
+            <h2 class="font-serif text-4xl sm:text-5xl text-burgundy-900 font-normal">Photo Memories</h2>
+            <p class="font-sans text-sm text-charcoal-800/70 max-w-lg mx-auto">
+                A curated collection of precious memories from across our time together — every laugh, every quiet day, and every moment in between.
+            </p>
+        </div>
+
+        <!-- Editorial Masonry Grid -->
+        <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500">
+            <!-- Dynamically injected via JS -->
+        </div>
+    </section>
+
+    <section class="py-16 px-6 bg-burgundy-900 text-ivory-50 text-center my-12 relative">
+        <div class="max-w-3xl mx-auto space-y-3 reveal-on-scroll">
+            <p class="font-serif text-2xl sm:text-3xl italic font-light">
+                "My favorite place has never been a place. It's been beside you."
+            </p>
+        </div>
+    </section>
+
+    <!-- 8. THE LITTLE THINGS -->
+    <section class="py-24 px-6 md:px-12 max-w-4xl mx-auto text-center space-y-12">
+        <div class="space-y-4 reveal-on-scroll">
+            <span class="font-sans text-xs tracking-widest uppercase text-gold-600 font-semibold">The Unspoken Moments</span>
+            <h2 class="font-serif text-3xl sm:text-5xl text-burgundy-900">It's Not Just the Big Moments</h2>
+        </div>
+
+        <div class="space-y-6 font-serif text-xl sm:text-2xl text-charcoal-800/90 font-light italic">
+            <p class="little-thing-line opacity-30 transition-opacity duration-700">"It's the random conversations."</p>
+            <p class="little-thing-line opacity-30 transition-opacity duration-700">"The stupid jokes."</p>
+            <p class="little-thing-line opacity-30 transition-opacity duration-700">"The uncontrollable laughter."</p>
+            <p class="little-thing-line opacity-30 transition-opacity duration-700">"The little arguments."</p>
+            <p class="little-thing-line opacity-30 transition-opacity duration-700">"The comfortable silence."</p>
+            <p class="little-thing-line opacity-30 transition-opacity duration-700">"The unexpected calls."</p>
+            <p class="little-thing-line opacity-30 transition-opacity duration-700">"The moments neither of us thought we'd remember."</p>
+        </div>
+
+        <div class="pt-8 reveal-on-scroll">
+            <p class="font-sans text-sm uppercase tracking-widest text-rose-600 font-medium">
+                Those are the moments that made this year ours.
+            </p>
+        </div>
+    </section>
+
+    <div class="text-center py-6 px-6 reveal-on-scroll">
+        <p class="font-serif text-2xl italic text-burgundy-900 max-w-md mx-auto">
+            "365 days later, and my heart still chooses you."
+        </p>
+    </div>
+
+    <!-- 9. A LITTLE LETTER FROM AMRIT -->
+    <section id="letter" class="py-24 px-6 md:px-12 max-w-3xl mx-auto">
+        <div class="text-center space-y-4 mb-12 reveal-on-scroll">
+            <span class="font-sans text-xs tracking-[0.2em] text-gold-600 uppercase font-semibold">From Amrit to Chanda</span>
+            <h2 class="font-serif text-4xl sm:text-5xl text-burgundy-900">A Letter For Chanda</h2>
+        </div>
+
+        <div class="letter-paper p-8 sm:p-14 rounded-3xl border border-gold-500/20 relative shadow-2xl reveal-on-scroll">
+            <!-- Decorative Seal Icon -->
+            <div class="absolute -top-6 right-8 w-12 h-12 rounded-full bg-burgundy-900 flex items-center justify-center text-ivory-50 shadow-md">
+                <i data-lucide="heart" class="w-5 h-5 text-rose-400 fill-rose-400"></i>
+            </div>
+
+            <div class="font-handwriting text-2xl sm:text-3xl text-charcoal-900 leading-relaxed space-y-6">
+                <p class="font-semibold text-3xl text-burgundy-900">Dear Wifey,</p>
+                <p>One year.</p>
+                <p>It feels strange saying it out loud.</p>
+                <p>One whole year of us.</p>
+                <p>When I think about these 365 days, I don't think about just one particular moment. I think about everything we've collected along the way.</p>
+                <p>Our first trip to Bhopal.<br>
+                Our second journey to Jabalpur.<br>
+                Our days in Banaras.</p>
+                <p>The conversations between those trips. The laughter. The little fights. The silly moments. The moments when we did absolutely nothing and somehow still had a good time.</p>
+                <p>You slowly became a part of my everyday life, and somewhere along the way, you became one of the most important parts of it.</p>
+                <p>Thank you for every memory.<br>
+                Thank you for every smile.<br>
+                Thank you for staying.<br>
+                And thank you for being you.</p>
+                <p>If this first year has given me three beautiful journeys and countless memories, I can't wait to see where the next chapters take us.</p>
+                <p class="pt-4">Happy 1st Anniversary, Wifey.</p>
+                <p>Here's to our first year...</p>
+                <p>and hopefully, to many more journeys, memories, and ordinary days together.</p>
+                
+                <div class="pt-8 text-right space-y-1">
+                    <p class="text-xl font-sans uppercase tracking-widest text-burgundy-900 text-xs">Always,</p>
+                    <p class="text-4xl text-burgundy-900 font-bold">Amrit ❤️</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. OUR NEXT CHAPTER -->
+    <section class="py-24 px-6 bg-ivory-100/70 border-t border-ivory-200 text-center">
+        <div class="max-w-2xl mx-auto space-y-8 reveal-on-scroll">
+            <span class="font-sans text-xs tracking-widest uppercase text-gold-600 font-semibold">Looking Ahead</span>
+            <h2 class="font-serif text-3xl sm:text-4xl text-burgundy-900">Three Trips Behind Us...</h2>
+            <p class="font-serif text-xl italic text-charcoal-800/80">Who knows how many more are waiting for us?</p>
+            
+            <div class="py-6 flex flex-wrap justify-center items-center gap-4 text-xs font-sans tracking-widest uppercase text-charcoal-800/70">
+                <span>Bhopal</span>
+                <span class="text-rose-400">•</span>
+                <span>Jabalpur</span>
+                <span class="text-rose-400">•</span>
+                <span>Banaras</span>
+            </div>
+
+            <div class="space-y-1 font-serif text-lg text-burgundy-900 font-light">
+                <p>Three places.</p>
+                <p>Countless memories.</p>
+                <p class="text-2xl font-normal pt-2">One us.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. FINAL CINEMATIC SECTION -->
+    <section class="relative min-h-screen flex flex-col justify-center items-center text-center px-6 py-20 bg-burgundy-950 text-ivory-50 overflow-hidden">
+        <!-- Subtle Glows -->
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-rose-500/10 rounded-full blur-3xl animate-pulse-subtle"></div>
+        </div>
+
+        <div class="relative z-10 max-w-3xl mx-auto space-y-8 reveal-on-scroll">
+            <h2 class="font-serif text-5xl sm:text-7xl font-light text-ivory-50 tracking-tight">
+                Amrit <span class="text-rose-400 font-serif italic">&</span> Chanda
+            </h2>
+
+            <div class="space-y-2 font-serif text-xl sm:text-2xl text-ivory-200/80 font-light">
+                <p>One year down.</p>
+                <p>A lifetime of memories to go.</p>
+            </div>
+
+            <div class="py-6 space-y-4">
+                <p class="font-sans text-xs tracking-widest uppercase text-gold-400">And if I had to choose all over again...</p>
+                <h3 class="font-serif text-3xl sm:text-5xl md:text-6xl text-ivory-50 font-normal leading-tight">
+                    "I'd still choose you, My Baby Girl."
+                </h3>
+            </div>
+
+            <div class="pt-6 space-y-2">
+                <p class="font-serif text-2xl text-rose-300 italic">Happy 1st Anniversary ❤️</p>
+                <p class="font-sans text-xs tracking-widest uppercase text-ivory-300/60">Today. Tomorrow. Always.</p>
+            </div>
+
+            <!-- Tiny animated heart -->
+            <div class="pt-12">
+                <i data-lucide="heart" class="w-6 h-6 mx-auto text-rose-400 fill-rose-400 animate-bounce"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- FULLSCREEN LIGHTBOX -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-burgundy-950/95 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <!-- Close Button -->
+        <button id="lightbox-close" class="absolute top-6 right-6 p-3 text-ivory-50/80 hover:text-ivory-50 hover:bg-white/10 rounded-full transition-all duration-300 z-50" aria-label="Close lightbox">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+
+        <!-- Previous Button -->
+        <button id="lightbox-prev" class="absolute left-4 sm:left-8 p-3 text-ivory-50/80 hover:text-ivory-50 hover:bg-white/10 rounded-full transition-all duration-300 z-50" aria-label="Previous photo">
+            <i data-lucide="chevron-left" class="w-8 h-8"></i>
+        </button>
+
+        <!-- Next Button -->
+        <button id="lightbox-next" class="absolute right-4 sm:right-8 p-3 text-ivory-50/80 hover:text-ivory-50 hover:bg-white/10 rounded-full transition-all duration-300 z-50" aria-label="Next photo">
+            <i data-lucide="chevron-right" class="w-8 h-8"></i>
+        </button>
+
+        <!-- Container -->
+        <div class="max-w-4xl max-h-[85vh] flex flex-col items-center justify-center text-center space-y-4 px-4">
+            <img id="lightbox-img" src="" alt="Photo memory" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl transition-all duration-300">
+            <div class="text-ivory-50 space-y-1">
+                <span id="lightbox-tag" class="inline-block font-sans text-xs uppercase tracking-widest text-gold-400"></span>
+                <p id="lightbox-caption" class="font-serif text-lg sm:text-xl text-ivory-100/90 font-light"></p>
+                <p id="lightbox-index" class="font-sans text-[10px] uppercase tracking-widest text-ivory-300/50 pt-1"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /*
+          Photo Config Data:
+          Contains all 30 photos mapping to images/photo1.jpg through images/photo30.jpg.
+          Collection of all-time memories together.
+        */
+        const photosData = [
+            { id: 1, image: "images/photo4.jpeg", tag: "Special Moment", caption: "The beginning of our beautiful journey together.", fallback: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=800&q=80" },
+            { id: 2, image: "images/photo5.jpeg", tag: "Quiet Days", caption: "Quiet moments and endless peaceful conversations.", fallback: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" },
+            { id: 3, image: "images/photo6.jpeg", tag: "Togetherness", caption: "Exploring new paths hand in hand.", fallback: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80" },
+            { id: 4, image: "images/photo7.jpeg", tag: "Golden Hour", caption: "Sunsets that made time stand still.", fallback: "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?auto=format&fit=crop&w=800&q=80" },
+            { id: 5, image: "images/photo8.jpeg", tag: "Pure Joy", caption: "Uncontrollable laughter in the middle of nowhere.", fallback: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" },
+            { id: 6, image: "images/photo9.jpeg", tag: "Simple Bliss", caption: "Momo, cool weather, and you beside me.", fallback: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=800&q=80" },
+            { id: 7, image: "images/photo10.jpeg", tag: "Favorite Smile", caption: "A smile I'll never get tired of looking at.", fallback: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80" },
+            { id: 8, image: "images/photo11.jpeg", tag: "Best View", caption: "The view was great, but you were better.", fallback: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" },
+            { id: 9, image: "images/photo12.jpeg", tag: "Stolen Glances", caption: "Soft whispers and sweet conversations.", fallback: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=800&q=80" },
+            { id: 10, image: "images/photo13.jpeg", tag: "Cherished Day", caption: "One of those days we wish would never end.", fallback: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80" },
+
+            { id: 11, image: "images/photo14.jpeg", tag: "New Adventures", caption: "Starting another beautiful chapter together.", fallback: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80" },
+            { id: 12, image: "images/photo15.jpeg", tag: "Reflections", caption: "Reflections in you calm my heart.", fallback: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80" },
+            { id: 13, image: "images/photo16.jpeg", tag: "Inside Jokes", caption: "Familiar jokes and easier, warmer smiles.", fallback: "https://images.unsplash.com/photo-1528164344705-47542687990d?auto=format&fit=crop&w=800&q=80" },
+            { id: 14, image: "images/photo17.jpeg", tag: "Walking Together", caption: "Taking long walks with nowhere specific to be.", fallback: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80" },
+            { id: 15, image: "images/photo18.jpeg", tag: "Candid Moments", caption: "A candid moment captured forever.", fallback: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" },
+            { id: 16, image: "images/photo19.jpeg", tag: "Sunny Days", caption: "Midday sun, light breezes, and happy hearts.", fallback: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80" },
+            { id: 17, image: "images/photo20.jpeg", tag: "Little Details", caption: "Finding beauty in every little detail around us.", fallback: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80" },
+            { id: 18, image: "images/photo21.jpeg", tag: "Evening Glow", caption: "Watching the twilight fade into evening together.", fallback: "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?auto=format&fit=crop&w=800&q=80" },
+            { id: 19, image: "images/photo22.jpeg", tag: "Familiar Warmth", caption: "When every single moment started feeling like home.", fallback: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=800&q=80" },
+            { id: 20, image: "images/photo23.jpeg", tag: "Grateful Heart", caption: "Heading home with fuller hearts and big smiles.", fallback: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80" },
+
+            { id: 21, image: "images/photo24.jpeg", tag: "Timeless Moments", caption: "Timeless memories etched in our hearts.", fallback: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=800&q=80" },
+            { id: 22, image: "images/photo25.jpeg", tag: "Morning Light", caption: "Fresh morning light and new beginnings.", fallback: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80" },
+            { id: 23, image: "images/photo26.jpeg", tag: "Golden Sky", caption: "Riding into golden skies and quiet horizon.", fallback: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" },
+            { id: 24, image: "images/photo27.jpeg", tag: "Luminous Night", caption: "Nights lit by soft lights and laughter.", fallback: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=800&q=80" },
+            { id: 28, image: "images/photo28.jpeg", tag: "365 Days", caption: "365 days leading to this peaceful moment.", fallback: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80" },
+            { id: 29, image: "images/photo29.jpeg", tag: "My Favorite", caption: "Every memory with you becomes a favorite memory.", fallback: "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?auto=format&fit=crop&w=800&q=80" },
+            { id: 30, image: "images/photo30.jpeg", tag: "Lifetime Ahead", caption: "Many memories captured, a lifetime to go.", fallback: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=800&q=80" }
+        ];
+
+        let currentActiveIndex = 0;
+
+        function renderGallery(items) {
+            const container = document.getElementById('gallery-container');
+            container.innerHTML = '';
+
+            items.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'gallery-card relative group rounded-2xl overflow-hidden cursor-pointer bg-ivory-200/50 shadow-md hover:shadow-xl transition-all duration-500 reveal-on-scroll';
+                
+                // Varied visual height for editorial masonry feel
+                const heightClass = (index % 5 === 0) ? 'h-96' : (index % 3 === 0) ? 'h-80' : 'h-72';
+
+                card.innerHTML = `
+                    <div class="w-full ${heightClass} relative overflow-hidden">
+                        <img 
+                            src="${item.image}" 
+                            alt="${item.caption}"
+                            loading="lazy"
+                            class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                            onerror="this.onerror=null; this.src='${item.fallback}';"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-burgundy-950/80 via-burgundy-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        
+                        <div class="absolute top-3 left-3 bg-ivory-50/90 backdrop-blur px-2.5 py-1 rounded-full text-[10px] font-sans tracking-wider uppercase text-burgundy-900 shadow-sm">
+                            ${item.tag}
+                        </div>
+
+                        <div class="absolute bottom-4 left-4 right-4 text-ivory-50 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                            <p class="font-serif text-sm sm:text-base font-light leading-snug line-clamp-2">${item.caption}</p>
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => {
+                    openLightbox(index);
+                });
+
+                container.appendChild(card);
+            });
+
+            // Re-bind scroll reveal for newly injected cards
+            observeScrollElements();
+        }
+
+        function openLightbox(index) {
+            currentActiveIndex = index;
+            const item = photosData[currentActiveIndex];
+            
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            const tag = document.getElementById('lightbox-tag');
+            const caption = document.getElementById('lightbox-caption');
+            const indexLabel = document.getElementById('lightbox-index');
+
+            img.src = item.image;
+            img.onerror = function() {
+                this.src = item.fallback;
+            };
+            tag.textContent = item.tag;
+            caption.textContent = item.caption;
+            indexLabel.textContent = `Memory ${currentActiveIndex + 1} of ${photosData.length}`;
+
+            lightbox.classList.remove('hidden');
+            setTimeout(() => {
+                lightbox.classList.remove('opacity-0');
+            }, 10);
+
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('opacity-0');
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        function nextPhoto() {
+            if (photosData.length === 0) return;
+            currentActiveIndex = (currentActiveIndex + 1) % photosData.length;
+            openLightbox(currentActiveIndex);
+        }
+
+        function prevPhoto() {
+            if (photosData.length === 0) return;
+            currentActiveIndex = (currentActiveIndex - 1 + photosData.length) % photosData.length;
+            openLightbox(currentActiveIndex);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Lucide icons
+            lucide.createIcons();
+
+            // Render initial 30 photos as an all-time memory collection
+            renderGallery(photosData);
+
+            // Lightbox Control Listeners
+            document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+            document.getElementById('lightbox-next').addEventListener('click', nextPhoto);
+            document.getElementById('lightbox-prev').addEventListener('click', prevPhoto);
+
+            document.getElementById('lightbox').addEventListener('click', (e) => {
+                if (e.target.id === 'lightbox') closeLightbox();
+            });
+
+            // Keyboard Navigation
+            document.addEventListener('keydown', (e) => {
+                const lightbox = document.getElementById('lightbox');
+                if (!lightbox.classList.contains('hidden')) {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowRight') nextPhoto();
+                    if (e.key === 'ArrowLeft') prevPhoto();
+                }
+            });
+
+            // Mobile Navigation Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Navbar Glassmorphic effect on scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-ivory-50/90', 'backdrop-blur-md', 'shadow-sm', 'py-3');
+                    navbar.classList.remove('py-5');
+                } else {
+                    navbar.classList.remove('bg-ivory-50/90', 'backdrop-blur-md', 'shadow-sm', 'py-3');
+                    navbar.classList.add('py-5');
+                }
+
+                // Journey Map line progress logic
+                const mapSection = document.getElementById('journey-map');
+                if (mapSection) {
+                    const rect = mapSection.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        const line = document.getElementById('map-progress-line');
+                        line.style.width = '100%';
+                    }
+                }
+            });
+
+            // Ambient Audio Player using audio.mp3
+            const bgAudio = new Audio('audio.mp3');
+            bgAudio.loop = true;
+            let isAudioPlaying = false;
+
+            const audioBtn = document.getElementById('audio-toggle');
+            const audioLabel = document.getElementById('audio-label');
+
+            audioBtn.addEventListener('click', () => {
+                if (!isAudioPlaying) {
+                    bgAudio.play().then(() => {
+                        isAudioPlaying = true;
+                        audioLabel.textContent = "Sound On";
+                        audioBtn.classList.add('bg-burgundy-900', 'text-ivory-50');
+                    }).catch(err => {
+                        console.log('Audio playback failed or blocked by browser:', err);
+                    });
+                } else {
+                    bgAudio.pause();
+                    isAudioPlaying = false;
+                    audioLabel.textContent = "Sound Off";
+                    audioBtn.classList.remove('bg-burgundy-900', 'text-ivory-50');
+                }
+            });
+
+            // Observe elements for scroll reveals
+            observeScrollElements();
+        });
+
+        function observeScrollElements() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Specific line reveal observer for "The Little Things"
+            const lineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('opacity-30');
+                        entry.target.classList.add('opacity-100', 'text-burgundy-900');
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            document.querySelectorAll('.little-thing-line').forEach(line => {
+                lineObserver.observe(line);
+            });
+        }
+    </script>
+</body>
+</html>
